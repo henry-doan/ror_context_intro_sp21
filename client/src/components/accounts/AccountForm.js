@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { Form } from 'semantic-ui-react';
+import { AccountConsumer } from '../../providers/AccountProvider';
 
-const AccountForm = () => {
+const AccountForm = ({ updateAccount }) => {
   const [username, setUserName] = useState("")
   const [membership, setMembership] = useState("")
   // const [user, setUser] = useState({ username: "", membership: ""})
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const user = { username, membership }
+    updateAccount(1, user)
   }
 
   return(
@@ -31,6 +34,17 @@ const AccountForm = () => {
   )
 }
 
+const ConnectedAccountForm = (props) => (
+  <AccountConsumer>
+    { value => (
+      <AccountForm 
+        {...props}
+        {...value}
+      />
+    )}
+  </AccountConsumer>
+)
+
 const membershipOpts = [
   { key: "b", text: "Bronze", value: "Bronze" },
   { key: "s", text: "Silver", value: "Silver" },
@@ -38,4 +52,4 @@ const membershipOpts = [
   { key: "p", text: "Platinum", value: "Platinum" },
 ]
 
-export default AccountForm;
+export default ConnectedAccountForm;
